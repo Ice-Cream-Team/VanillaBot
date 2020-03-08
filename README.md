@@ -23,7 +23,16 @@ $ npm install discord.js
 
 **CURRENT COMMANDS**
 
-**To boot up the bot for hosting** (note: you'll need the bot's private token to run this, as it'll prompt you for it after running this command):
-$ npm start
+**To boot up the bot for hosting** (note: you'll need the bot's private token to run this):
+```
+# By default, it will look for the token from a file called "tokenfile". There should be no extra whiteline characters (e.g. newlines, tabs, spaces, etc.) in the file!
+$ npm start 
+
+# You can also specify the tokenfile.
+$ npm start -- --tokenfile <different token file>
+
+# Finally, you can directly use the token.
+$ npm start -- --token <token>
+```
 
 **To exit your hosting** of the bot press: 'Control' + 'C' in your terminal session while running the bot
