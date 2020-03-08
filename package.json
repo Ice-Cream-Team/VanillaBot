@@ -1,0 +1,19 @@
+{
+  "name": "vanillabot",
+  "version": "1.0.0",
+  "description": "A Discord Bot for the Ice Cream Team",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ice-Cream-Team/VanillaBot.git"
+  },
+  "author": "Andrewandre,Fireless,Johnvinder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ice-Cream-Team/VanillaBot/issues"
+  },
+  "homepage": "https://github.com/Ice-Cream-Team/VanillaBot#readme"
+}
