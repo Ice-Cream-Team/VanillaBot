@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Ice-Cream-Team/VanillaBot/issues"
   },
-  "homepage": "https://github.com/Ice-Cream-Team/VanillaBot#readme"
+  "homepage": "https://github.com/Ice-Cream-Team/VanillaBot#readme",
+  "dependencies": {
+    "discord.js": "^12.0.1"
+  }
 }
