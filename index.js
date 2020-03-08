@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 var readline = require('readline');
+const Gamedig = require('gamedig');
 var token;
 
 //so we can take in inputs using readline()
@@ -21,6 +22,22 @@ tokenInput.question("Please provide us with a valid token value:", function(toke
         client.on('message', (msg) => {
             if (msg.content === '!jokevinder'){
                 msg.channel.send('my name is jeff');
+            }
+        })
+
+        //get server info for fireless's server
+        client.on('message', (msg) => {
+            if (msg.content === '!mc'){
+                msg.channel.send("Getting fireless's server info....");
+                Gamedig.query({
+                    type: 'minecraft',
+                    host: 'brawl.com',
+                }).then((state) => {
+                    msg.channel.send('Name: ' + state.name);
+                    msg.channel.send('Max Players: ' + state.maxplayers);
+                }).catch((error) => {
+                    msg.channel.send("Server is offline");
+                });
             }
         })
 

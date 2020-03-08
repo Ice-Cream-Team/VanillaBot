@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Ice-Cream-Team/VanillaBot#readme",
   "dependencies": {
-    "discord.js": "^12.0.1"
+    "discord.js": "^12.0.1",
+    "gamedig": "^2.0.20"
   }
 }
