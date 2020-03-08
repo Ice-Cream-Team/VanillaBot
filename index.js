@@ -41,9 +41,37 @@ tokenInput.question("Please provide us with a valid token value:", function(toke
             }
         })
 
+
+        //search an anime on MAL
+        client.on('message', (msg) => {
+            let searchPrefix = '!malanime';
+            if (msg.content.startsWith(searchPrefix)){
+                let animeName;
+                msg.channel.send("Searching MAL. . .  ");
+                animeName = msg.content.slice(searchPrefix.length).split(' ');
+                var nameo = animeName.join("+")
+                console.log(animeName);
+                msg.channel.send('https://myanimelist.net/anime.php?q=' + nameo);
+            }
+        })
+
+        //search a user on MAL
+        client.on('message', (msg) => {
+            let searchPrefix = '!maluser';
+            if (msg.content.startsWith(searchPrefix)){
+                let animeName;
+                msg.channel.send("Searching MAL. . .  ");
+                animeName = msg.content.slice(searchPrefix.length).split(' ');
+                var nameo = animeName.join("")
+                console.log(animeName);
+                msg.channel.send('https://myanimelist.net/profile/' + nameo);
+            }
+        })
+
         //tells us if bot is connected after client is ready
         client.on('ready', () => {
             console.log('Bot is now connected');
+            client.user.setActivity('!help for commandlist', { type: 'LISTENING' });
         });
     };
 });
