@@ -4,7 +4,7 @@
   "description": "A Discord Bot for the Ice Cream Team",
   "main": "index.js",
   "scripts": {
-    "test": "start"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
