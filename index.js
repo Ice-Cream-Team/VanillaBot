@@ -31,9 +31,10 @@ tokenInput.question("Please provide us with a valid token value:", function(toke
                 msg.channel.send("Getting fireless's server info....");
                 Gamedig.query({
                     type: 'minecraft',
-                    host: 'brawl.com',
+                    host: 'mc.datafire.dev', //or whatever server link it is..
                 }).then((state) => {
                     msg.channel.send('Name: ' + state.name);
+                    msg.channel.send('TotalPlayers: ' + state.players.length);
                     msg.channel.send('Max Players: ' + state.maxplayers);
                 }).catch((error) => {
                     msg.channel.send("Server is offline");
@@ -59,11 +60,11 @@ tokenInput.question("Please provide us with a valid token value:", function(toke
         client.on('message', (msg) => {
             let searchPrefix = '!maluser';
             if (msg.content.startsWith(searchPrefix)){
-                let animeName;
+                let userName;
                 msg.channel.send("Searching MAL. . .  ");
-                animeName = msg.content.slice(searchPrefix.length).split(' ');
-                var nameo = animeName.join("")
-                console.log(animeName);
+                userName = msg.content.slice(searchPrefix.length).split(' ');
+                var nameo = userName.join("")
+                console.log(userName);
                 msg.channel.send('https://myanimelist.net/profile/' + nameo);
             }
         })
