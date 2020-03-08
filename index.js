@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-//const token = 'Njg2MDM5OTgxMjYwOTMxMDk1.XmRjdg.faMRgyKA6uIno3DAzjBwVSmKt_E'
 const client = new Discord.Client();
 var readline = require('readline');
 var token;
