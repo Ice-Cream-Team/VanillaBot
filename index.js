@@ -19,69 +19,81 @@ commander
     token = commander.token
     if (token===undefined)
         token = fs.readFileSync(commander.tokenfile, 'utf8'); 
-    console.log(token)
+        console.log(token);
 }
 
 //unless the login step is done, do not try and connect to the discord client using an invalid token
 let login;
 client.login(token);
 login = true;
-if (login == true){     
-
-    //ask to tell a johnvinder joke
+if (login == true){
     client.on('message', (msg) => {
-        if (msg.content === '!jokevinder'){
-            msg.channel.send('my name is jeff');
-        }
-    })
-
-    //get server info for fireless's server
-    client.on('message', (msg) => {
-        if (msg.content === '!mc'){
-            msg.channel.send("Getting fireless's server info....");
-            Gamedig.query({
-                type: 'minecraft',
-                host: 'mc.datafire.dev', //or whatever server link it is..
-            }).then((state) => {
-                msg.channel.send('Name: ' + state.name);
-                msg.channel.send('TotalPlayers: ' + state.players.length);
-                msg.channel.send('Max Players: ' + state.maxplayers);
-            }).catch((error) => {
-                msg.channel.send("Server is offline");
-            });
-        }
-    })
-
-
-    //search an anime on MAL
-    client.on('message', (msg) => {
-        let searchPrefix = '!malanime';
-        if (msg.content.startsWith(searchPrefix)){
-            let animeName;
-            msg.channel.send("Searching MAL. . .  ");
-            animeName = msg.content.slice(searchPrefix.length).split(' ');
-            var nameo = animeName.join("+")
-            console.log(animeName);
-            msg.channel.send('https://myanimelist.net/anime.php?q=' + nameo);
-        }
-    })
-
-    //search a user on MAL
-    client.on('message', (msg) => {
-        let searchPrefix = '!maluser';
-        if (msg.content.startsWith(searchPrefix)){
-            let userName;
-            msg.channel.send("Searching MAL. . .  ");
-            userName = msg.content.slice(searchPrefix.length).split(' ');
-            var nameo = userName.join("")
-            console.log(userName);
-            msg.channel.send('https://myanimelist.net/profile/' + nameo);
-        }
-    })
-
-    //tells us if bot is connected after client is ready
+        let vanillaPrefix = '!vb ';
+        //if the msg doesnt have the prefix starting it, or is written by a bot, RETURN to once thou came
+        if (!msg.content.startsWith(vanillaPrefix) || msg.author.bot) return;
+            const args = msg.content.slice(vanillaPrefix.length).split(' ');
+            const command = args.shift().toLowerCase();
+            if (command === 'server'){
+                if (args[0] === 'mc'){
+                    msg.channel.send("Getting fireless's server info....");
+                    Gamedig.query({
+                    type: 'minecraft',
+                    host: 'mc.datafire.dev', //or whatever server link it is..
+                    }).then((state) => {
+                        msg.channel.send('Name: ' + state.name);
+                        msg.channel.send('Total Players: ' + state.players.length);
+                        msg.channel.send('Max Players: ' + state.maxplayers);
+                    }).catch((error) => {
+                        msg.channel.send("Server is offline");
+                    });
+                }
+                else if (args[0] === '7days'){
+                msg.channel.send("Getting fireless's server info....");
+                Gamedig.query({
+                        type: '7d2d',
+                        host: '7days.datafire.dev',
+                        }).then((state) => {
+                        msg.channel.send('Name: ' + state.name);
+                        msg.channel.send('Total Players: ' + state.players.length);
+                        msg.channel.send('Max Players: ' + state.maxplayers);
+                        }).catch((error) => {
+                        msg.channel.send("Server is offline");
+                        });
+                    }
+                else {
+                    msg.channel.send(`You didn't provide a valid argument, check this list below!`);
+                    msg.channel.send(`Serverhoster: Game; command`);
+                    msg.channel.send(`fireless#0161: Minecraft; mc`);
+                    msg.channel.send(`fireless#0161: 7 Days 2 Die; 7days`);
+                }
+            }
+            //for pictionary sessions, quick link
+            else if (command === 'pictionary'){
+                msg.channel.send('https://skribbl.io/');
+            }
+            //search MyAnimeList for a user profile, or a general anime search
+            else if (command === 'mal'){{
+                    if (args[0] === 'anime'){
+                        let animeName;
+                        msg.channel.send("Searching MAL. . .  ");
+                        animeName = msg.content.slice(14).split(' ');
+                        let nameo = animeName.join("+")
+                        msg.channel.send('https://myanimelist.net/anime.php?q=' + nameo);
+                    }
+                    if (args[0] === 'user'){
+                        let userName;
+                        msg.channel.send("Searching MAL. . .  ");
+                        userName = msg.content.slice(13).split(' ');
+                        let nameo = userName.join("+")
+                        msg.channel.send('https://myanimelist.net/anime.php?q=' + nameo);
+                    }
+                }
+            }
+    });
+        //tells us if bot is connected after client is ready
     client.on('ready', () => {
         console.log('Bot is now connected');
-        client.user.setActivity('!help for commandlist', { type: 'LISTENING' });
+        client.user.setActivity('in TEST', { type: 'LISTENING' });
     });
+
 };
