@@ -84,8 +84,8 @@ if (login == true){
                         let userName;
                         msg.channel.send("Searching MAL. . .  ");
                         userName = msg.content.slice(13).split(' ');
-                        let nameo = userName.join("+")
-                        msg.channel.send('https://myanimelist.net/anime.php?q=' + nameo);
+                        var nameo = userName.join("");
+                        msg.channel.send('https://myanimelist.net/profile/' + nameo);
                     }
                 }
             }
