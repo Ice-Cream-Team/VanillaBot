@@ -15,9 +15,8 @@ function BotCmd(cmd, desc) {
     this.desc = desc;
 }
 const cmdSpacesSkip   = 5;
-const cmdHelpHeader   = "Hello world! This is VanillaBot! This is the The Ice Cream Team's first OFFICIAL SERVER (Get hyped BOOIIZZ) BOT! All interactions with this bot" +
-                        " begin with !vb and are followed by one or more arguments separated by spaces. For instance, to get information on the Minecraft server you" +
-                        " would type the following...\n\n!vb server mv\n\nBelow are the available arguments. Enjoy!\n";
+const cmdHelpHeader1  = ">>> **VanillaBot Command Help**";
+const cmdHelpHeader2  = ">>> **VanillaBot Command List:**\nWelcome to the Ice Cream Team's **Official** bot service!";
 const cmdPrefix       = new BotCmd('!vb',          'Prefix needed for interacting with the bot.');
 const cmdServer       =   new BotCmd('server',     'Get information on one of Will\'s servers.');
 const cmdSvrMinecraft =     new BotCmd('mc',       'Specifies the minecraft server.');
@@ -67,19 +66,33 @@ function spaceStr(str, spacesBefore, spacesTotal) {
     }
     return newStr;
 }
-function generateHelp(cmds, header, depth=0) {
+function generateHelp(cmds, header, prevCmd="", depth=0) {
     var   i;
     var   str       = "";
+    const fullCmd   = prevCmd + ' ' + cmds.cmd['cmd'];
     const newDepth  = depth+1;
-    const spaceSkip = cmdSpacesSkip*depth;
     
+    // Add header.
     if (header !== undefined)
-        str += header + '\n';   
-    str += spaceStr(cmds.cmd['cmd'], spaceSkip, spaceSkip+cmds.cmd['cmd'].length) + " : " + cmds.cmd['desc'] + '\n';
+        str += header + '\n'; 
+      
+    // Add first header.
+    if (depth===0)
+        str += "**[Level 1] Commands:**\n";
+      
+    // Add command and description.
+    str += prevCmd + "**" + cmds.cmd['cmd'] + "** " + 
+        ((depth==0 || depth==1) && cmds.next !== undefined ? "{command} ": "") + 
+        "= " + cmds.cmd['desc'] + '\n';
     
+    // Add second header.
+    if (depth===0)
+        str += "**[Level 2] Commands:**\n"
+    
+    // Add next level of commands.
     if (cmds.next !== undefined)
         for (i = 0; i<cmds.next.length; i++) 
-            str += generateHelp(cmds.next[i], undefined, newDepth);
+            str += generateHelp(cmds.next[i], undefined, prevCmd + ' ' + cmds.cmd['cmd'] + ' ', newDepth);
             
     return str;      
 }
@@ -169,7 +182,8 @@ client.on('message', (msg) => {
         }
         // Print out the help information.
         else if (command === cmdHelp.cmd) {
-            msg.channel.send(generateHelp(cmdList, cmdHelpHeader));
+            msg.channel.send(cmdHelpHeader1);
+            msg.channel.send(generateHelp(cmdList, cmdHelpHeader2));
         }
 });
 //tells us if bot is connected after client is ready
