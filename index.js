@@ -26,6 +26,7 @@ const cmdMal          =   new BotCmd('mal',        'Get information from MyAnime
 const cmdMalAnime     =     new BotCmd('anime',    'Find information on an anime. The next argument is the anime.');
 const cmdMalUser      =     new BotCmd('user',     'Find information on an user. The next argument is the user.');
 const cmdHelp         =   new BotCmd('help',       'Display information on how to utilize bot.');
+const cmdKys          =   new BotCmd('kys',        'Shuts down the VanillaBot.');
 const cmdList = {
   cmd: cmdPrefix,
   next: [
@@ -49,6 +50,10 @@ const cmdList = {
     },
     {
       cmd: cmdHelp,
+      next: undefined
+    },
+    {
+      cmd: cmdKys,
       next: undefined
     }
   ]
@@ -99,17 +104,17 @@ function generateHelp(cmds, header, prevCmd="", depth=0) {
 
 // Parse the application's switches.
 commander
-  .version('0.0.0', '-v --version')
-  .usage('[OPTIONS]...')
-  .option('-t, --token <token>',          'Specify the token directly.')
-  .option('-tf, --tokenfile <tokenfile>', 'Filename of the file that contains the token.', 'tokenfile')
-  .parse(process.argv);
-  
+    .version('0.0.0', '-v --version')
+    .usage('[OPTIONS]...')
+    .option('-t, --token <token>', 'Specify the token directly.')
+    .option('-tf, --tokenfile <tokenfile>', 'Filename of the file that contains the token.', 'tokenfile')
+    .parse(process.argv);
+
 // Acquire token.
 {
     token = commander.token
-    if (token===undefined)
-        token = fs.readFileSync(commander.tokenfile, 'utf8'); 
+    if (token === undefined)
+        token = fs.readFileSync(commander.tokenfile, 'utf8');
     console.log(token);
 }
 
@@ -125,66 +130,133 @@ client.on('message', (msg) => {
             if (args[0] === cmdSvrMinecraft.cmd){
                 msg.channel.send("Getting fireless's server info....");
                 Gamedig.query({
-                type: 'minecraft',
-                host: 'mc.datafire.dev', //or whatever server link it is..
+                    type: 'minecraft',
+                    host: 'mc.datafire.dev', //or whatever server link it is..
                 }).then((state) => {
-                    msg.channel.send('Name: ' + state.name);
-                    msg.channel.send('Total Players: ' + state.players.length);
-                    msg.channel.send('Max Players: ' + state.maxplayers);
-                }).catch((error) => {
-                    msg.channel.send("Server is offline");
+                    msg.channel.send({
+                        embed: {
+                            color: 3066993,
+                            author: {
+                                name: "Minecraft",
+                                icon_url: "http://www.rw-designer.com/icon-image/5547-64x64x4.png",
+                            },
+                            title: "Mint Ice Cream",
+
+                            description: "hosted by ice cream team.",
+                            fields: [{
+                                name: "Server Info",
+                                value: (`**${state.connect}**`),
+                            }, {
+                                name: "Players",
+                                value: (`**${state.players.length}**`),
+                            }, {
+                                name: "Max Players",
+                                value: (`**${state.maxplayers}**`),
+                            }],
+
+                            footer: {
+                                icon_url: client.user.avatarURL,
+
+          
+                            }
+                        }
+                    });
+
                 });
-            }
-            else if (args[0] === cmdSvr7D2D.cmd){
-            msg.channel.send("Getting fireless's server info....");
-            Gamedig.query({
-                type: '7d2d',
-                host: '7days.datafire.dev',
-            }).then((state) => {
-                msg.channel.send('Name: ' + state.name);
-                msg.channel.send('Total Players: ' + state.players.length);
-                msg.channel.send('Max Players: ' + state.maxplayers);
-                }).catch((error) => {
-                msg.channel.send("Server is offline");
+            } else if (args[0] === cmdSvr7D2D.cmd) {
+               msg.channel.send("Getting fireless's server info....");
+                Gamedig.query({
+                    type: '7d2d',
+                    host: '7days.datafire.dev',
+                    port: '26900',
+                }).then((state) => {
+                    msg.channel.send({
+                        embed: {
+                            color: 10038562,
+                            author: {
+                                name: "7days",
+                                icon_url: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/46b63d3c-ae67-464c-9a37-670829b2a157/d9yftdm-7deaf276-864d-4017-a3d8-ab45d39ce8f6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQ2YjYzZDNjLWFlNjctNDY0Yy05YTM3LTY3MDgyOWIyYTE1N1wvZDl5ZnRkbS03ZGVhZjI3Ni04NjRkLTQwMTctYTNkOC1hYjQ1ZDM5Y2U4ZjYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.RBMbE0FZR08HwHjBNZmf2kHJSu5f01UZmsmf3C0P6P0",
+                            },
+                            title: "Strawberry Ice Cream",
+
+                            description: "hosted by ice cream team.",
+                            fields: [{
+                                name: "Server Info",
+                                value: (`**${state.connect}**`),
+                            }, {
+                                name: "Players",
+                                value: (`**${state.players.length}**`),
+                            }, {
+                                name: "Max Players",
+                                value: (`**${state.maxplayers}**`),
+                            }],
+                            footer: {
+                                icon_url: client.user.avatarURL,
+                            }
+                        }
+                    });
+
                 });
-            }
-            else 
-            {
-                msg.channel.send(`You didn't provide a valid argument, check this list below!`);
-                msg.channel.send(`Serverhoster: Game; command`);
-                msg.channel.send(`fireless#0161: Minecraft; mc`);
-                msg.channel.send(`fireless#0161: 7 Days 2 Die; 7days`);
+            } else {
+                msg.channel.send({
+                    embed: {
+                        color: 3447003,
+                        author: {
+                            name: "Ice Cream Servers",
+                            icon_url: "https://www.siriusdecisions.com/-/media/siriusdecisions/images/blog-images/2014/july/multiple-flavors.ashx?h=267&w=400&hash=4F34EB7E696FE7B84C5762AB30DDF636",
+                        },
+                        title: "Server Help",
+
+                        description: "view server info with !vb server command",
+                        fields: [{
+                            name: "Servers",
+                            value: "Minecraft\n7Days to die",
+                        }, {
+                            name: "Commands",
+                            value: "mc\n7days",
+
+                        }],
+
+                        footer: {
+                            icon_url: client.user.avatarURL,
+
+
+                        }
+                    }
+                });
             }            
         }
         //for pictionary sessions, quick link
         else if (command === cmdPict.cmd){
             msg.channel.send('https://skribbl.io/');
-        }
         //search MyAnimeList for a user profile, or a general anime search
-        else if (command === cmdMal.cmd){{
-                if (args[0] === cmdMalAnime.cmd){
-                    let animeName;
-                    msg.channel.send("Searching MAL. . .  ");
-                    animeName = msg.content.slice(14).split(' ');
-                    let nameo = animeName.join(" ");
-                    getInfoFromName(nameo)
-                    .then(result => msg.channel.send( ">>> " + `**Title:** ` + result.japaneseTitle + ` / ` + result.englishTitle + `\n**Episodes:** ` + result.episodes + `\n**Aired:** ` + result.aired + `\n**Airing Status:** ` + result.status + `\n**Audience Score:** ` + result.score + result.episodes + `\n**Type:** ` + result.type + `\n**Synopsis:** ` + result.synopsis + `\n**Link:** ` + result.url))
-                    .catch(error => console.log(error));
-                }
-                if (args[0] === cmdMalUser.cmd){
-                    let userName;
-                    msg.channel.send("Searching MAL. . .  ");
-                    userName = msg.content.slice(13).split(' ');
-                    let nameo = userName.join("");
-                    msg.channel.send('https://myanimelist.net/profile/' + nameo);
-                }
+        } else if (command === cmdMal.cmd){
+            if (args[0] === cmdMalAnime.cmd){
+                let animeName;
+                msg.channel.send("Searching MAL. . .  ");
+                animeName = msg.content.slice(14).split(' ');
+                let nameo = animeName.join(" ");
+                getInfoFromName(nameo)
+                .then(result => msg.channel.send( ">>> " + `**Title:** ` + result.japaneseTitle + ` / ` + result.englishTitle + `\n**Episodes:** ` + result.episodes + `\n**Aired:** ` + result.aired + `\n**Airing Status:** ` + result.status + `\n**Audience Score:** ` + result.score + result.episodes + `\n**Type:** ` + result.type + `\n**Synopsis:** ` + result.synopsis + `\n**Link:** ` + result.url))
+                .catch(error => console.log(error));
             }
-        }
+            if (args[0] === cmdMalUser.cmd){
+                let userName;
+                msg.channel.send("Searching MAL. . .  ");
+                userName = msg.content.slice(13).split(' ');
+                let nameo = userName.join("");
+                msg.channel.send('https://myanimelist.net/profile/' + nameo);
+            }
         // Print out the help information.
-        else if (command === cmdHelp.cmd) {
+        } else if (command === cmdHelp.cmd) {
             msg.channel.send(cmdHelpHeader1);
             msg.channel.send(generateHelp(cmdList, cmdHelpHeader2));
-        }
+        // Kill the bot.
+        } else if (command === cmdKys.cmd) {
+            msg.channel.send('Bye').then(m => {
+                client.destroy();
+            });
+        }        
 });
 //tells us if bot is connected after client is ready
 client.on('ready', () => {
