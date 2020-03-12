@@ -1,0 +1,1 @@
+//VanillaBot MyAnimeList Command, search MAL's data and retrieve it using a custom webscrapper.
