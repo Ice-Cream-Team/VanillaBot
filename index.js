@@ -26,7 +26,7 @@ const cmdMal          =   new BotCmd('mal',        'Get information from MyAnime
 const cmdMalAnime     =     new BotCmd('anime',    'Find information on an anime. The next argument is the anime.');
 const cmdMalUser      =     new BotCmd('user',     'Find information on an user. The next argument is the user.');
 const cmdHelp         =   new BotCmd('help',       'Display information on how to utilize bot.');
-const cmdKys          =   new BotCmd('kys',        'Shuts down the VanillaBot.');
+const cmdKys          =   new BotCmd('kill',        'Shuts down the VanillaBot.');
 const cmdList = {
   cmd: cmdPrefix,
   next: [
