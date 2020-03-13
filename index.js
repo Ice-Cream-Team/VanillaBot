@@ -147,9 +147,36 @@ client.on('message', (msg) => {
                     type: 'minecraft',
                     host: 'mc.datafire.dev', //or whatever server link it is..
                 }).then((state) => {
-                    msg.channel.send({embed: {color: 3066993,author: {name: "Minecraft",icon_url: "http://www.rw-designer.com/icon-image/5547-64x64x4.png",},title: state.name ,description: "Hosted by the Ice Cream Team.",fields: [{name: "Server Info",value: (`**${state.connect}**`),}, {name: "Players",value: (`**${state.players.length}**`),}, {name: "Max Players",value: (`**${state.maxplayers}**`),}],footer: {icon_url: client.user.avatarURL,}}});
+                    msg.channel.send({
+                        embed: {
+                            color: 3066993,
+                            author: {
+                                name: "Minecraft",
+                                icon_url: "http://www.rw-designer.com/icon-image/5547-64x64x4.png",
+                            },
+                            title: state.name,
+                            description: "Hosted by the Ice Cream Team.",
+                            fields: [{
+                                name: "Server Info",
+                                value: (`**${state.connect}**`),
+                            }, {
+                                name: "Players",
+                                value: (`**${state.players.length}**`),
+                            }, {
+                                name: "Max Players",
+                                value: (`**${state.maxplayers}**`),
+                            }],
+                            footer: {
+                                icon_url: client.user.avatarURL,
+                            }
+                        }
+                    });
                     }).catch((error) => {
-                        msg.channel.send({embed: {color: 10038562,description: "Server is **offline**."}});
+                        msg.channel.send({
+                            embed: {
+                                color: 10038562,
+                                description: "Server is **offline**."}
+                            });
                     });
             } else if (args[0] === cmdSvr7D2D.cmd) {
                msg.channel.send("Getting fireless's server info....");
@@ -158,9 +185,37 @@ client.on('message', (msg) => {
                     host: '7days.datafire.dev',
                     port: '26900',
                 }).then((state) => {
-                    msg.channel.send({embed: {color: 3066993,author: {name: "7days",icon_url: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/46b63d3c-ae67-464c-9a37-670829b2a157/d9yftdm-7deaf276-864d-4017-a3d8-ab45d39ce8f6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQ2YjYzZDNjLWFlNjctNDY0Yy05YTM3LTY3MDgyOWIyYTE1N1wvZDl5ZnRkbS03ZGVhZjI3Ni04NjRkLTQwMTctYTNkOC1hYjQ1ZDM5Y2U4ZjYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.RBMbE0FZR08HwHjBNZmf2kHJSu5f01UZmsmf3C0P6P0",},title: "Strawberry Ice Cream",description: "Hosted by the Ice Cream Team.",fields: [{name: "Server Info",value: (`**${state.connect}**`),}, {name: "Players",value: (`**${state.players.length}**`),}, {name: "Max Players",value: (`**${state.maxplayers}**`),}],footer: {icon_url: client.user.avatarURL,}}});
+                    msg.channel.send({
+                        embed: {
+                            color: 3066993,
+                            author: {
+                                name: "7days",
+                                icon_url: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/46b63d3c-ae67-464c-9a37-670829b2a157/d9yftdm-7deaf276-864d-4017-a3d8-ab45d39ce8f6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQ2YjYzZDNjLWFlNjctNDY0Yy05YTM3LTY3MDgyOWIyYTE1N1wvZDl5ZnRkbS03ZGVhZjI3Ni04NjRkLTQwMTctYTNkOC1hYjQ1ZDM5Y2U4ZjYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.RBMbE0FZR08HwHjBNZmf2kHJSu5f01UZmsmf3C0P6P0",
+                            },
+                            title: "Strawberry Ice Cream",
+                            description: "Hosted by the Ice Cream Team.",
+                            fields: [{
+                                name: "Server Info",
+                                value: (`**${state.connect}**`),
+                            }, {
+                                name: "Players",
+                                value: (`**${state.players.length}**`),
+                            }, {
+                                name: "Max Players",
+                                value: (`**${state.maxplayers}**`),
+                            }],
+                            footer: {
+                                icon_url: client.user.avatarURL,
+                            }
+                        }
+                    });
                 }).catch((error) => {
-                    msg.channel.send({embed: {color: 10038562,description: "Server is **offline**."}});
+                    msg.channel.send({
+                        embed: {
+                            color: 10038562,
+                            description: "Server is **offline**."
+                        }
+                    });
                 });
             } else {
                 msg.channel.send({
@@ -198,7 +253,12 @@ client.on('message', (msg) => {
                 let nameo = animeName.join(" ");
                 getInfoFromName(nameo)
                 .then(result => msg.channel.send( ">>> " + `**Title:** ` + result.japaneseTitle + ` / ` + result.englishTitle + `\n**Episodes:** ` + result.episodes + `\n**Aired:** ` + result.aired + `\n**Airing Status:** ` + result.status + `\n**Audience Score:** ` + result.score + result.episodes + `\n**Type:** ` + result.type + `\n**Synopsis:** ` + result.synopsis + `\n**Link:** ` + result.url))
-                .catch(error => console.log(error));
+                .catch(error => msg.channel.send({
+                    embed: {
+                        color: 10038562,
+                        description: "The anime you searched for doesn't exist."
+                    }
+                }));
             }
             if (args[0] === cmdMalUser.cmd){
                 let userName;
@@ -209,7 +269,9 @@ client.on('message', (msg) => {
             }
         // Print out the help information.
         } else if (command === cmdHelp.cmd) {
-            msg.channel.send({embed: generateHelp(cmdList, botTitle, botAuthor, botDesc, botColor, botIconUrl)});
+            msg.channel.send({
+                embed: generateHelp(cmdList, botTitle, botAuthor, botDesc, botColor, botIconUrl)
+            });
         // Kill the bot.
         } else if (command === cmdKys.cmd) {
             msg.channel.send(':skull_crossbones: ...VanillaBot now shutting down... :skull_crossbones:').then(m => {
