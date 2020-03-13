@@ -17,7 +17,7 @@ function BotCmd(cmd, desc) {
 const botTitle        = "VanillaBot";
 const botAuthor       = "The Ice Cream Team";
 const botDesc         = "Welcome to the Ice Cream Team's **Official** bot service!";
-const botColor        = 3066993;
+const botColor        = 16776656;
 const botIconUrl      = "https://cdn.discordapp.com/app-icons/686039981260931095/8757d287833ef19147c73844535691dd.png";
 const cmdPrefix       = new BotCmd('!vb',          'Prefix needed for interacting with the bot.');
 const cmdServer       =   new BotCmd('server',     'Get information on one of Will\'s servers.');
