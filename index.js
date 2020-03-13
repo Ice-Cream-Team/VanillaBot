@@ -14,9 +14,11 @@ function BotCmd(cmd, desc) {
     this.cmd  = cmd;
     this.desc = desc;
 }
-const cmdSpacesSkip   = 5;
-const cmdHelpHeader1  = ">>> **VanillaBot Command Help**";
-const cmdHelpHeader2  = ">>> **VanillaBot Command List:**\nWelcome to the Ice Cream Team's **Official** bot service!";
+const botTitle        = "VanillaBot";
+const botAuthor       = "The Ice Cream Team";
+const botDesc         = "Welcome to the Ice Cream Team's **Official** bot service!";
+const botColor        = 16776656;
+const botIconUrl      = "https://cdn.discordapp.com/app-icons/686039981260931095/8757d287833ef19147c73844535691dd.png";
 const cmdPrefix       = new BotCmd('!vb',          'Prefix needed for interacting with the bot.');
 const cmdServer       =   new BotCmd('server',     'Get information on one of Will\'s servers.');
 const cmdSvrMinecraft =     new BotCmd('mc',       'Specifies the minecraft server.');
@@ -71,35 +73,47 @@ function spaceStr(str, spacesBefore, spacesTotal) {
     }
     return newStr;
 }
-function generateHelp(cmds, header, prevCmd="", depth=0) {
+function generateHelp(cmds, title, author, desc, color, iconUrl, prevEmb=undefined, prevCmd="", depth=0) {
     var   i;
-    var   str       = "";
+    var   emb;     
     const fullCmd   = prevCmd + ' ' + cmds.cmd['cmd'];
     const newDepth  = depth+1;
     
-    // Add header.
-    if (header !== undefined)
-        str += header + '\n'; 
-      
-    // Add first header.
-    if (depth===0)
-        str += "**[Level 1] Commands:**\n";
+    // If at beginning, configure header information in the 
+    // embed object, else use the prevEmb.
+    if (depth==0) {
+        emb = {
+            color:       color,
+            title:       title,
+            author:      { name: author, },
+            description: desc,
+            thumbnail:   { url:  iconUrl, },
+            fields:      [ { name: "**[Level 1] Command:**", value: "** **" }],
+        };              
+    } else {
+        emb = prevEmb;
+    }        
       
     // Add command and description.
-    str += prevCmd + "**" + cmds.cmd['cmd'] + "** " + 
-        ((depth==0 || depth==1) && cmds.next !== undefined ? "{command} ": "") + 
-        "= " + cmds.cmd['desc'] + '\n';
+    emb.fields.push( {
+        name:  prevCmd + "**" + cmds.cmd['cmd'] + "** " + ((depth==0 || depth==1) && cmds.next !== undefined ? "{command} ": ""),
+        value: cmds.cmd['desc'],
+    } );
     
     // Add second header.
-    if (depth===0)
-        str += "**[Level 2] Commands:**\n"
+    if (depth==0) {
+        emb.fields.push( {
+            name:  "**[Level 2] Commands:**",
+            value: "** **",
+        } );
+    }
     
     // Add next level of commands.
     if (cmds.next !== undefined)
         for (i = 0; i<cmds.next.length; i++) 
-            str += generateHelp(cmds.next[i], undefined, prevCmd + ' ' + cmds.cmd['cmd'] + ' ', newDepth);
+            generateHelp(cmds.next[i], undefined, undefined, undefined, undefined, undefined, emb, prevCmd + ' ' + cmds.cmd['cmd'] + ' ', newDepth);
             
-    return str;      
+    return emb;      
 }
 
 // Parse the application's switches.
@@ -195,8 +209,7 @@ client.on('message', (msg) => {
             }
         // Print out the help information.
         } else if (command === cmdHelp.cmd) {
-            msg.channel.send(cmdHelpHeader1);
-            msg.channel.send(generateHelp(cmdList, cmdHelpHeader2));
+            msg.channel.send({embed: generateHelp(cmdList, botTitle, botAuthor, botDesc, botColor, botIconUrl)});
         // Kill the bot.
         } else if (command === cmdKys.cmd) {
             msg.channel.send(':skull_crossbones: ...VanillaBot now shutting down... :skull_crossbones:').then(m => {
