@@ -251,8 +251,16 @@ client.on('message', (msg) => {
                 msg.channel.send("Searching MAL. . .  ");
                 animeName = msg.content.slice(14).split(' ');
                 let nameo = animeName.join(" ");
+                console.log(nameo);
                 getInfoFromName(nameo)
-                .then(result => msg.channel.send( ">>> " + `**Title:** ` + result.japaneseTitle + ` / ` + result.englishTitle + `\n**Episodes:** ` + result.episodes + `\n**Aired:** ` + result.aired + `\n**Airing Status:** ` + result.status + `\n**Audience Score:** ` + result.score + result.episodes + `\n**Type:** ` + result.type + `\n**Synopsis:** ` + result.synopsis + `\n**Link:** ` + result.url))
+                .then(result => msg.channel.send(
+                    {
+                    embed: {
+                        color: 3447003,
+                        title: result.englishTitle + ' / ' + result.japaneseTitle,
+                        description: result.synopsis,
+                    }
+                }))
                 .catch(error => msg.channel.send({
                     embed: {
                         color: 10038562,
