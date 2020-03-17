@@ -283,7 +283,7 @@ client.on('message', (msg) => {
                 .catch(error => msg.channel.send({
                     embed: {
                         color: 10038562,
-                        description: "The anime you searched for doesn't exist."
+                        description: "The anime you searched for doesn't exist, or MAL's backend is too slow."
                     }
                 }));
             }
