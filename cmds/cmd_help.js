@@ -67,9 +67,9 @@ function generateHelp(cmds, title, author, desc, color, iconUrl, prevEmb=undefin
 module.exports = {
 	name: 'helpMenu',
 	description: cl.c.cmdHelp.desc,
-    execute(msg, args){
-        msg.channel.send({
-            embed: generateHelp(cl.cl, botTitle, botAuthor, botDesc, botColor, botIconUrl)
-        });
-    }
+  execute(msg, args){
+      msg.channel.send({
+          embed: generateHelp(cl.cl, botTitle, botAuthor, botDesc, botColor, botIconUrl)
+      });
+  }
 };

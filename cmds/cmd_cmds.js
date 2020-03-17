@@ -13,6 +13,14 @@ var c = {
     cmdMal          :   new BotCmd('mal',          'Get information from MyAnimeList.'),
     cmdMalAnime     :     new BotCmd('anime',      'Find information on an anime. The next argument is the anime.'),
     cmdMalUser      :     new BotCmd('user',       'Find information on an user. The next argument is the user.'),
+    cmdPoll         :   new BotCmd('poll',         'Perform operations related to the management of polls.'),
+    cmdPollCreate   :     new BotCmd('create',     'Creates a new poll. Next argument is the name of the poll. Must be single word.'),
+    cmdPollAdd      :     new BotCmd('add',        'Adds a new option to the specified poll. Next argument is poll, and the one after is the option. Both must be single words.'),
+    cmdPollVote     :     new BotCmd('vote',       'Performs either a vote (or over-writes a vote). Next argument is the poll, and the one after is the option. Both must be single words.'),
+    cmdPollRetract  :     new BotCmd('retract',    'Removes ones vote. Next argument is the poll.'),
+    cmdPollView     :     new BotCmd('view',       'View the results of a specified poll or list all the polls. Next argument is the poll. If no poll is specified, the available polls are shown.'),
+    cmdPollRemove   :     new BotCmd('remove',     'Remove specified poll. Next argument is the poll.'),
+    cmdPollReset    :     new BotCmd('reset',      'Clears all the polls.'),    
     cmdHelp         :   new BotCmd('help',         'Display information on how to utilize bot.'),
     cmdKys          :   new BotCmd('kill',         'Shuts down the VanillaBot.')
 };
@@ -40,6 +48,18 @@ const cl = {
                 {cmd: c.cmdMalUser,      next: undefined}
             ]
         },
+        {
+          cmd: c.cmdPoll,
+          next: [
+            {cmd: c.cmdPollCreate,  next: undefined},
+            {cmd: c.cmdPollAdd,     next: undefined},
+            {cmd: c.cmdPollVote,    next: undefined},
+            {cmd: c.cmdPollRetract, next: undefined},
+            {cmd: c.cmdPollView,    next: undefined},
+            {cmd: c.cmdPollRemove,  next: undefined},
+            {cmd: c.cmdPollReset,   next: undefined}
+          ]
+        },        
         {
             cmd: c.cmdHelp,
             next: undefined
