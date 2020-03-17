@@ -258,7 +258,26 @@ client.on('message', (msg) => {
                     embed: {
                         color: 3447003,
                         title: result.englishTitle + ' / ' + result.japaneseTitle,
-                        description: result.synopsis,
+                        url: result.url,
+                        fields: [{
+                            name: "Synopsis",
+                            value: result.synopsis,
+                        }, {
+                            name: "Audience Rating:",
+                            value: result.score,
+                        }, {
+                            name: "Episodes",
+                            value: result.episodes,
+                        }, {
+                            name: "Rating",
+                            value: result.rating,
+                        }, {
+                            name: "Aired",
+                            value: result.aired,
+                        }, {
+                            name: "Popularity",
+                            value: result.popularity,
+                        }],
                     }
                 }))
                 .catch(error => msg.channel.send({
