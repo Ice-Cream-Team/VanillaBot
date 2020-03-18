@@ -3,10 +3,19 @@ const commander = require('commander');
 var fs = require('fs')
 var readline = require('readline');
 const Gamedig = require('gamedig');
-const {searchResultsWhereNameAndType, getInfoFromName} = require('myanimelists');
 
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
 
+//cmd files
+const cmdIndex = fs.readdirSync('./cmds').filter(file => file.endsWith('.js'));
+
+for (const file of cmdIndex) {
+    const command = require(`./cmds/${file}`);
+    client.commands.set(command.name, command);
+}
+//for displaying the accessable commands in the folder
+console.log(client.commands);
 var token;
 
 // Define the commands.
@@ -23,7 +32,7 @@ const cmdPrefix       = new BotCmd('!vb',          'Prefix needed for interactin
 const cmdServer       =   new BotCmd('server',     'Get information on one of Will\'s servers.');
 const cmdSvrMinecraft =     new BotCmd('mc',       'Specifies the minecraft server.');
 const cmdSvr7D2D      =     new BotCmd('7days',    'Specifies the 7 Days 2 Die.');
-const cmdPict         =   new BotCmd('pictionary', 'Returns the link to pictionary.');
+const cmdGame         =   new BotCmd('game',       'Returns the link to game specified.');
 const cmdMal          =   new BotCmd('mal',        'Get information from MyAnimeList.');
 const cmdMalAnime     =     new BotCmd('anime',    'Find information on an anime. The next argument is the anime.');
 const cmdMalUser      =     new BotCmd('user',     'Find information on an user. The next argument is the user.');
@@ -40,7 +49,7 @@ const cmdList = {
       ]
     },
     {
-      cmd: cmdPict, 
+      cmd: cmdGame, 
       next: undefined
     },
     {
@@ -242,58 +251,11 @@ client.on('message', (msg) => {
             }            
         }
         //for pictionary sessions, quick link
-        else if (command === cmdPict.cmd){
-            msg.channel.send('https://skribbl.io/');
-        //search MyAnimeList for a user profile, or a general anime search
+        else if (command === cmdGame.cmd){
+            client.commands.get('gameSelect').execute(msg, args);
+            //search MyAnimeList for a user profile, or a general anime search
         } else if (command === cmdMal.cmd){
-            if (args[0] === cmdMalAnime.cmd){
-                let animeName;
-                msg.channel.send("Searching MAL. . .  ");
-                animeName = msg.content.slice(14).split(' ');
-                let nameo = animeName.join(" ");
-                console.log(nameo);
-                getInfoFromName(nameo)
-                .then(result => msg.channel.send(
-                    {
-                    embed: {
-                        color: 3447003,
-                        title: result.englishTitle + ' / ' + result.japaneseTitle,
-                        url: result.url,
-                        fields: [{
-                            name: "Synopsis",
-                            value: result.synopsis,
-                        }, {
-                            name: "Audience Rating:",
-                            value: result.score,
-                        }, {
-                            name: "Episodes",
-                            value: result.episodes,
-                        }, {
-                            name: "Rating",
-                            value: result.rating,
-                        }, {
-                            name: "Aired",
-                            value: result.aired,
-                        }, {
-                            name: "Popularity",
-                            value: result.popularity,
-                        }],
-                    }
-                }))
-                .catch(error => msg.channel.send({
-                    embed: {
-                        color: 10038562,
-                        description: "The anime you searched for doesn't exist, or MAL's backend is too slow."
-                    }
-                }));
-            }
-            if (args[0] === cmdMalUser.cmd){
-                let userName;
-                msg.channel.send("Searching MAL. . .  ");
-                userName = msg.content.slice(13).split(' ');
-                let nameo = userName.join("");
-                msg.channel.send('https://myanimelist.net/profile/' + nameo);
-            }
+                client.commands.get('searchMAL').execute(msg, args);
         // Print out the help information.
         } else if (command === cmdHelp.cmd) {
             msg.channel.send({
