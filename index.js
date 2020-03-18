@@ -251,12 +251,39 @@ client.on('message', (msg) => {
                 msg.channel.send("Searching MAL. . .  ");
                 animeName = msg.content.slice(14).split(' ');
                 let nameo = animeName.join(" ");
+                console.log(nameo);
                 getInfoFromName(nameo)
-                .then(result => msg.channel.send( ">>> " + `**Title:** ` + result.japaneseTitle + ` / ` + result.englishTitle + `\n**Episodes:** ` + result.episodes + `\n**Aired:** ` + result.aired + `\n**Airing Status:** ` + result.status + `\n**Audience Score:** ` + result.score + result.episodes + `\n**Type:** ` + result.type + `\n**Synopsis:** ` + result.synopsis + `\n**Link:** ` + result.url))
+                .then(result => msg.channel.send(
+                    {
+                    embed: {
+                        color: 3447003,
+                        title: result.englishTitle + ' / ' + result.japaneseTitle,
+                        url: result.url,
+                        fields: [{
+                            name: "Synopsis",
+                            value: result.synopsis,
+                        }, {
+                            name: "Audience Rating:",
+                            value: result.score,
+                        }, {
+                            name: "Episodes",
+                            value: result.episodes,
+                        }, {
+                            name: "Rating",
+                            value: result.rating,
+                        }, {
+                            name: "Aired",
+                            value: result.aired,
+                        }, {
+                            name: "Popularity",
+                            value: result.popularity,
+                        }],
+                    }
+                }))
                 .catch(error => msg.channel.send({
                     embed: {
                         color: 10038562,
-                        description: "The anime you searched for doesn't exist."
+                        description: "The anime you searched for doesn't exist, or MAL's backend is too slow."
                     }
                 }));
             }
