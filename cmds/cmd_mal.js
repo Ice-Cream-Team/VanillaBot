@@ -1,10 +1,13 @@
 //VanillaBot MyAnimeList Command, search MAL's data and retrieve it using a custom webscrapper.
+
+var cl = require('./cmd_cmds.js');
+
 const {getInfoFromName} = require('myanimelists');
 module.exports = {
 	name: 'searchMAL',
-	description: 'Searches MyAnimeList',
+	description: cl.c.cmdMal.desc,
     execute(msg, args){
-        if (args[0] === 'anime'){
+        if (args[0] === cl.c.cmdMalAnime.cmd){
             let animeName;
             msg.channel.send("Searching MAL. . .  ");
             animeName = msg.content.slice(14).split(' ');
@@ -45,7 +48,7 @@ module.exports = {
                 }
             }));
         }
-        if (args[0] === 'user'){
+        if (args[0] === cl.c.cmdMalUser.cmd){
             let userName = msg.content.slice(13).split(' ');
             let nameo = userName.join("");
             let discordMSG = 'https://myanimelist.net/profile/' + nameo;

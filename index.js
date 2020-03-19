@@ -3,6 +3,7 @@ const commander = require('commander');
 var fs = require('fs')
 var readline = require('readline');
 const Gamedig = require('gamedig');
+var cl = require('./cmds/cmd_cmds.js');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -17,113 +18,6 @@ for (const file of cmdIndex) {
 //for displaying the accessable commands in the folder
 console.log(client.commands);
 var token;
-
-// Define the commands.
-function BotCmd(cmd, desc) {
-    this.cmd  = cmd;
-    this.desc = desc;
-}
-const botTitle        = "VanillaBot";
-const botAuthor       = "The Ice Cream Team";
-const botDesc         = "Welcome to the Ice Cream Team's **Official** bot service!";
-const botColor        = 16776656;
-const botIconUrl      = "https://cdn.discordapp.com/app-icons/686039981260931095/8757d287833ef19147c73844535691dd.png";
-const cmdPrefix       = new BotCmd('!vb',          'Prefix needed for interacting with the bot.');
-const cmdServer       =   new BotCmd('server',     'Get information on one of Will\'s servers.');
-const cmdSvrMinecraft =     new BotCmd('mc',       'Specifies the minecraft server.');
-const cmdSvr7D2D      =     new BotCmd('7days',    'Specifies the 7 Days 2 Die.');
-const cmdGame         =   new BotCmd('game',       'Returns the link to game specified.');
-const cmdMal          =   new BotCmd('mal',        'Get information from MyAnimeList.');
-const cmdMalAnime     =     new BotCmd('anime',    'Find information on an anime. The next argument is the anime.');
-const cmdMalUser      =     new BotCmd('user',     'Find information on an user. The next argument is the user.');
-const cmdHelp         =   new BotCmd('help',       'Display information on how to utilize bot.');
-const cmdKys          =   new BotCmd('kill',        'Shuts down the VanillaBot.');
-const cmdList = {
-  cmd: cmdPrefix,
-  next: [
-    { 
-      cmd: cmdServer,
-      next: [ 
-        {cmd: cmdSvrMinecraft, next: undefined},
-        {cmd: cmdSvr7D2D,      next: undefined}
-      ]
-    },
-    {
-      cmd: cmdGame, 
-      next: undefined
-    },
-    {
-      cmd: cmdMal,
-      next: [ 
-        {cmd: cmdMalAnime,     next: undefined},
-        {cmd: cmdMalUser,      next: undefined}
-      ]
-    },
-    {
-      cmd: cmdHelp,
-      next: undefined
-    },
-    {
-      cmd: cmdKys,
-      next: undefined
-    }
-  ]
-};
-function spaceStr(str, spacesBefore, spacesTotal) {
-    var   i;
-    var   newStr   = "";
-    const endIndex = spacesBefore+str.length;
-    for (i=0; i<spacesTotal; i++) {
-        if (i>=spacesBefore && i<endIndex) {
-            newStr += str[i-spacesBefore];
-        } else {
-            newStr += " ";
-        }
-    }
-    return newStr;
-}
-function generateHelp(cmds, title, author, desc, color, iconUrl, prevEmb=undefined, prevCmd="", depth=0) {
-    var   i;
-    var   emb;     
-    const fullCmd   = prevCmd + ' ' + cmds.cmd['cmd'];
-    const newDepth  = depth+1;
-    
-    // If at beginning, configure header information in the 
-    // embed object, else use the prevEmb.
-    if (depth==0) {
-        emb = {
-            color:       color,
-            title:       title,
-            author:      { name: author, },
-            description: desc,
-            thumbnail:   { url:  iconUrl, },
-            fields:      [ { name: "**[Level 1] Command:**", value: "** **" }],
-        };              
-    } else {
-        emb = prevEmb;
-    }        
-      
-    // Add command and description.
-    emb.fields.push( {
-        name:  prevCmd + "**" + cmds.cmd['cmd'] + "** " + ((depth==0 || depth==1) && cmds.next !== undefined ? "{command} ": ""),
-        value: cmds.cmd['desc'],
-    } );
-    
-    // Add second header.
-    if (depth==0) {
-        emb.fields.push( {
-            name:  "**[Level 2] Commands:**",
-            value: "** **",
-        } );
-    }
-    
-    // Add next level of commands.
-    if (cmds.next !== undefined)
-        for (i = 0; i<cmds.next.length; i++) 
-            generateHelp(cmds.next[i], undefined, undefined, undefined, undefined, undefined, emb, prevCmd + ' ' + cmds.cmd['cmd'] + ' ', newDepth);
-            
-    return emb;      
-}
 
 // Parse the application's switches.
 commander
@@ -144,13 +38,13 @@ commander
 //unless the login step is done, do not try and connect to the discord client using an invalid token
 client.login(token);
 client.on('message', (msg) => {
-    let vanillaPrefix = cmdPrefix.cmd+' ';
+    let vanillaPrefix = cl.c.cmdPrefix.cmd+' ';
     //if the msg doesnt have the prefix starting it, or is written by a bot, RETURN to once thou came
     if (!msg.content.startsWith(vanillaPrefix) || msg.author.bot) return;
         const args = msg.content.slice(vanillaPrefix.length).split(' ');
         const command = args.shift().toLowerCase();
-        if (command === cmdServer.cmd){
-            if (args[0] === cmdSvrMinecraft.cmd){
+        if (command === cl.c.cmdServer.cmd){
+            if (args[0] === cl.c.cmdSvrMinecraft.cmd){
                 msg.channel.send("Getting fireless's server info....");
                 Gamedig.query({
                     type: 'minecraft',
@@ -187,7 +81,7 @@ client.on('message', (msg) => {
                                 description: "Server is **offline**."}
                             });
                     });
-            } else if (args[0] === cmdSvr7D2D.cmd) {
+            } else if (args[0] === cl.c.cmdSvr7D2D.cmd) {
                msg.channel.send("Getting fireless's server info....");
                 Gamedig.query({
                     type: '7d2d',
@@ -248,25 +142,23 @@ client.on('message', (msg) => {
                         }
                     }
                 });
-            }            
+            }
         }
         //for pictionary sessions, quick link
-        else if (command === cmdGame.cmd){
+        else if (command === cl.c.cmdGame.cmd){
             client.commands.get('gameSelect').execute(msg, args);
             //search MyAnimeList for a user profile, or a general anime search
-        } else if (command === cmdMal.cmd){
-                client.commands.get('searchMAL').execute(msg, args);
+        } else if (command === cl.c.cmdMal.cmd){
+            client.commands.get('searchMAL').execute(msg, args);
         // Print out the help information.
-        } else if (command === cmdHelp.cmd) {
-            msg.channel.send({
-                embed: generateHelp(cmdList, botTitle, botAuthor, botDesc, botColor, botIconUrl)
-            });
+        } else if (command === cl.c.cmdHelp.cmd) {
+            client.commands.get('helpMenu').execute(msg, args);
         // Kill the bot.
-        } else if (command === cmdKys.cmd) {
+        } else if (command === cl.c.cmdKys.cmd) {
             msg.channel.send(':skull_crossbones: ...VanillaBot now shutting down... :skull_crossbones:').then(m => {
                 client.destroy();
             });
-        }        
+        }
 });
 //tells us if bot is connected after client is ready
 client.on('ready', () => {

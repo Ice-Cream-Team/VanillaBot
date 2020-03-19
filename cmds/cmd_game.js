@@ -1,10 +1,12 @@
 //VanillaBot's Game Command, various gaming implementations here.
 
+var cl = require('./cmd_cmds.js');
+
 module.exports = {
 	name: 'gameSelect',
-	description: 'Searches game list links',
+	description: cl.c.cmdGame.desc,
     execute(msg, args){
-        if (args[0] === 'pictionary') {
+        if (args[0] === cl.c.cmdGamePict.cmd) {
             msg.channel.send(
                 {
                 embed: {
@@ -14,7 +16,7 @@ module.exports = {
                 }
             })
         }
-        if (args[0] === 'jackbox') {
+        if (args[0] === cl.c.cmdGameJack.cmd) {
             msg.channel.send(
                 {
                 embed: {
