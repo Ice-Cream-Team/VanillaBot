@@ -11,6 +11,10 @@ const pollCreateTable = `CREATE TABLE IF NOT EXISTS pollTable(
                             ARG1 TEXT)`;
                             
 function pollCreate(pollDb, pollName, msg) {
+    if (pollName === undefined) {
+        msg.channel.send("Invalid use of command: Cannot create a poll with an undefined name");
+        return;
+    };
     msg.channel.send('Creating '+pollName+' poll...');
     pollDb.serialize(()=>{
         pollDb
@@ -31,6 +35,10 @@ function pollCreate(pollDb, pollName, msg) {
 }  
 
 function pollAdd(pollDb, pollName, optionName, msg) {
+    if (optionName === undefined) {
+        msg.channel.send('Invalid use of command: Cannot create undefined poll option');
+        return;
+    };
     msg.channel.send('Creating '+optionName+' option for '+pollName+' poll...');
     pollDb.serialize(()=>{
         pollDb
@@ -213,6 +221,10 @@ function pollView(pollDb, pollName, msg) {
 }
 
 function pollRemove(pollDb, pollName, msg) {
+    if (pollName === undefined) {
+        msg.channel.send('Invalid use of command: poll name is undefined');
+        return;
+    };
     msg.channel.send('Removing '+pollName+' poll...');
     pollDb.serialize(()=>{
         pollDb
