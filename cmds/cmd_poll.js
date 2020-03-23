@@ -222,7 +222,7 @@ function pollView(pollDb, pollName, msg) {
 
 function pollRemove(pollDb, pollName, msg) {
     if (pollName === undefined) {
-        msg.channel.send('Invalid use of command: poll name is undefined');
+        msg.channel.send('Invalid use of command: Cannot remove undefined poll');
         return;
     };
     msg.channel.send('Removing '+pollName+' poll...');
