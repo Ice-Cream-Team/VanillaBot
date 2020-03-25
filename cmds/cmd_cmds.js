@@ -74,4 +74,9 @@ const cl = {
 };
 
 
-module.exports = {c:c, cl:cl};
+module.exports = {
+  c:c, cl:cl,
+  setPrefix(prefix) {
+      this.c.cmdPrefix.cmd = prefix
+  }
+};

@@ -25,6 +25,7 @@ commander
     .option('-t, --token <token>',              'Specify the token directly.')
     .option('-tf, --tokenfile <tokenfile>',     'Filename of the file that contains the token.',                'tokenfile')
     .option('-pdbf, --polldbfile <polldbfile>', 'Filename of the file that contains the poll sqlite database.', 'poll.db')
+    .option('-pf, --prefix <prefix>',           'Specify the prefix of the bot.',                               '!vb')        
     .parse(process.argv);
 
 // Acquire token.
@@ -37,8 +38,14 @@ commander
 
 // Create or load databases.
 {
-    cmd_poll = require('./cmds/cmd_poll.js');
+    let cmd_poll = require('./cmds/cmd_poll.js');
     cmd_poll.initPollDb(commander.polldbfile);
+}
+
+// Configure bot prefix.
+{
+    let cmd_cmds = require('./cmds/cmd_cmds.js');
+    cmd_cmds.setPrefix(commander.prefix);
 }
 
 //unless the login step is done, do not try and connect to the discord client using an invalid token
