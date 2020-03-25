@@ -6,25 +6,31 @@ module.exports = {
 	name: 'gameSelect',
 	description: cl.c.cmdGame.desc,
     execute(msg, args){
-        if (args[0] === cl.c.cmdGamePict.cmd) {
-            msg.channel.send(
-                {
-                embed: {
-                    color: 3447003,
-                    title: 'Pictionary (Skribbl.io Link)',
-                    url: 'https://skribbl.io/',
-                }
-            })
-        }
-        if (args[0] === cl.c.cmdGameJack.cmd) {
-            msg.channel.send(
-                {
-                embed: {
-                    color: 3447003,
-                    title: 'Jackbox.tv',
-                    url: 'https://jackbox.tv/',
-                }
-            })
+        switch(args[0])
+        {
+            case cl.c.cmdGamePict.cmd:
+                msg.channel.send(
+                    {
+                    embed: {
+                        color: 3447003,
+                        title: 'Pictionary (Skribbl.io Link)',
+                        url: 'https://skribbl.io/',
+                    }
+                })
+                break;
+            case cl.c.cmdGameJack.cmd:
+                msg.channel.send(
+                    {
+                    embed: {
+                        color: 3447003,
+                        title: 'Jackbox.tv',
+                        url: 'https://jackbox.tv/',
+                    }
+                })
+                break;
+            default:
+                msg.channel.send(" :icecream: The **game** command you used was incorrect, try using **!vb help** for info about the commands! :icecream: ")
+                break;
         }
     }
 };

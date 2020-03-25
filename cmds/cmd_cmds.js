@@ -7,6 +7,7 @@ var c = {
     cmdServer       :   new BotCmd('server',       'Get information on one of Will\'s servers.'),
     cmdSvrMinecraft :     new BotCmd('mc',         'Specifies the minecraft server.'),
     cmdSvr7D2D      :     new BotCmd('7days',      'Specifies the 7 Days 2 Die.'),
+    cmdSvrList      :     new BotCmd('list',       'Displays list of all of the availible servers'),
     cmdGame         :   new BotCmd('game',         'Returns the link to the game specified.'),
     cmdGamePict     :     new BotCmd('pictionary', 'Returns the link to pictionary.'),
     cmdGameJack     :     new BotCmd('jackbox',    'Returns the link to jackbox.'),
@@ -22,7 +23,7 @@ var c = {
     cmdPollRemove   :     new BotCmd('remove',     'Remove specified poll. Next argument is the poll.'),
     cmdPollReset    :     new BotCmd('reset',      'Clears all the polls.'),    
     cmdHelp         :   new BotCmd('help',         'Display information on how to utilize bot.'),
-    cmdKys          :   new BotCmd('kill',         'Shuts down the VanillaBot.')
+    cmdKill          :   new BotCmd('kill',         'Shuts down the VanillaBot.')
 };
 const cl = {
     cmd: c.cmdPrefix,
@@ -31,7 +32,8 @@ const cl = {
             cmd: c.cmdServer,
             next: [
                 {cmd: c.cmdSvrMinecraft, next: undefined},
-                {cmd: c.cmdSvr7D2D,      next: undefined}
+                {cmd: c.cmdSvr7D2D,      next: undefined},
+                {cmd: c.cmdSvrList,      next: undefined}
             ]
         },
         {
@@ -65,7 +67,7 @@ const cl = {
             next: undefined
         },
         {
-            cmd: c.cmdKys,
+            cmd: c.cmdKill,
             next: undefined
         }
     ]
