@@ -50,29 +50,41 @@ client.on('message', (msg) => {
         return;
     const args = msg.content.slice(vanillaPrefix.length).split(' ');
     const command = args.shift().toLowerCase();
-
-    //for server calls using gamedig
-    if (command === cl.c.cmdServer.cmd){
-        client.commands.get('serverSearch').execute(msg, args);        
-    //for pictionary sessions, quick link
-    } else if (command === cl.c.cmdGame.cmd){
-        client.commands.get('gameSelect').execute(msg, args);
-    //search MyAnimeList for a user profile, or a general anime search
-    } else if (command === cl.c.cmdMal.cmd){
-        client.commands.get('searchMAL').execute(msg, args);
-    // Print out the help information.
-    } else if (command === cl.c.cmdHelp.cmd) {
-        client.commands.get('helpMenu').execute(msg, args);
-    // Perform poll operation.
-    } else if (command == cl.c.cmdPoll.cmd) {
-        client.commands.get(cl.c.cmdPoll.cmd).execute(msg, args);
-    // Kill the bot.
-    } else if (command === cl.c.cmdKys.cmd) {
-        msg.channel.send(':skull_crossbones: ...VanillaBot now shutting down... :skull_crossbones:').then(m => {  
-            cmd_poll = require('./cmds/cmd_poll.js');
-            cmd_poll.closePollDb();            
-            client.destroy();
-        });
+    
+    switch(command)
+    {
+        case cl.c.cmdGame.cmd:  
+            //for game quick links
+            client.commands.get('gameSelect').execute(msg, args);
+            break;
+        case cl.c.cmdMal.cmd:
+            //search MyAnimeList for a user profile, or a general anime search
+            client.commands.get('searchMAL').execute(msg, args);
+            break;
+        case cl.c.cmdHelp.cmd:
+            // Print out the help information.
+            client.commands.get('helpMenu').execute(msg, args);
+            break;
+        case cl.c.cmdPoll.cmd:
+            // Perform poll operation.
+            client.commands.get(cl.c.cmdPoll.cmd).execute(msg, args);
+            break;
+        case cl.c.cmdServer.cmd:
+            //for server calls using gamedig
+            client.commands.get('serverSearch').execute(msg, args); 
+            break;
+        case cl.c.cmdKill.cmd:
+            // Kill the bot.
+            msg.channel.send(':skull_crossbones: ...VanillaBot now shutting down... :skull_crossbones:').then(m => {  
+                cmd_poll = require('./cmds/cmd_poll.js');
+                cmd_poll.closePollDb();            
+                client.destroy();
+            });
+            break; //consistency.. lol
+        default:
+            //when the user types in a incorrect command with the prefix
+            msg.channel.send(" :icecream: The command you used is incorrect, try using **!vb help** for info about the commands! :icecream: ")
+            break;
     }
 });
 //tells us if bot is connected after client is ready

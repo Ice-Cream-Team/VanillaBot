@@ -35,4 +35,4 @@ $ npm start -- --tokenfile <different token file>
 $ npm start -- --token <token>
 ```
 
-**To exit your hosting** of the bot press: 'Control' + 'C' in your terminal session while running the bot
+**To exit your hosting** of the bot press: 'Control' + 'C' in your terminal session while running the bot, or use the command !vb kill in your discord session
