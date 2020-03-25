@@ -5,10 +5,9 @@ const Gamedig = require('gamedig');
 var cl = require('./cmd_cmds.js');
 
 module.exports = {
-	name: 'serverSearch',
-	description: 'Searches for game servers provided',
+	name: cl.c.cmdServer.cmd,
+	description: cl.c.cmdServer.desc,
     execute(msg, args){
-
         switch(args[0])
         {
             case cl.c.cmdSvrMinecraft.cmd:
