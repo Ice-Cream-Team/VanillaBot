@@ -4,7 +4,7 @@ var cl = require('./cmd_cmds.js');
 
 const {getInfoFromName} = require('myanimelists');
 module.exports = {
-	name: 'searchMAL',
+	name: cl.c.cmdMal.cmd,
 	description: cl.c.cmdMal.desc,
     execute(msg, args){
         if (args[0] === cl.c.cmdMalAnime.cmd){

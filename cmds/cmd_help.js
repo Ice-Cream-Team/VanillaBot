@@ -65,7 +65,7 @@ function generateHelp(cmds, title, author, desc, color, iconUrl, prevEmb=undefin
 }
 
 module.exports = {
-	name: 'helpMenu',
+	name: cl.c.cmdHelp.cmd,
 	description: cl.c.cmdHelp.desc,
   execute(msg, args){
       msg.channel.send({

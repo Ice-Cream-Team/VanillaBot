@@ -3,7 +3,7 @@
 var cl = require('./cmd_cmds.js');
 
 module.exports = {
-	name: 'gameSelect',
+	name: cl.c.cmdGame.cmd,
 	description: cl.c.cmdGame.desc,
     execute(msg, args){
         switch(args[0])
