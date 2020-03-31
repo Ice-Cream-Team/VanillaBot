@@ -31,6 +31,7 @@ commander
     .option('-pf, --prefix <prefix>',             'Specify the prefix of the bot.',                                '!vb')
     .option('-ar, --adminrole <adminrole>',       'Specify the role associated with admins.',                      'dev')
     .option('-io, --ignoreowner',                 'Ignore owner-level permissions.')
+    .option('-test, --regression',                'Runs in a testing enviroment.')
     .parse(process.argv);
 
 // Acquire token.
@@ -52,6 +53,25 @@ commander
     cp.initPollDb(commander.polldbfile);
     co.initDb(commander.ownerdbfile);
 }
+
+/**
+ * Runs automative regression testing on the bot
+ * @param inTest commander.regression input to take in determining which enviroment the bot is in
+ * @return 
+ */
+//wait 5 seconds to perform a command to give the bot time to communicate with the server (so it doesn't break, overload with commands and break the channel's definition)
+function testTask(i, msgs, list) { 
+    setTimeout(function() { 
+        console.log('TESTING: ' + list[i]);
+        msgs.channel.send(list[i])
+        .then((msg)=> {
+            setTimeout(function(){
+                msg.react('✅'); //once the command is complete, react with a checkmark of approval
+            }, 10000)
+        }); 
+    }, 10000 * i)
+  }
+
 
 /**
  * Returns a list of the roles associated with the user who sent the specified message.
@@ -81,9 +101,9 @@ client.on('message', (msg) => {
         let vanillaPrefix = cl.c.cmdPrefix.cmd+' ';
         
         // If the msg doesnt have the prefix starting it, or is written by a bot, RETURN to once thou came
-        if (!msg.content.startsWith(vanillaPrefix) || msg.author.bot) 
+        if (!msg.content.startsWith(vanillaPrefix) || (msg.author.bot && !commander.regression)) 
             return;
-          
+
         // Check for permissions.
         if ((userPriv<cmdPriv) && !msg.member.permissions.has("ADMINISTRATOR") && !commander.ignoreowner) {
             msg.channel.send("You don't have permissions...");
@@ -92,21 +112,49 @@ client.on('message', (msg) => {
         const args = msg.content.slice(vanillaPrefix.length).split(' ').filter(arg=>arg!="");    
         const command = args.shift().toLowerCase();
         
-        if (client.commands.has(command)){
-            client.commands.get(command).execute(msg, args);
-        }
-        else {
-            if (command === cl.c.cmdKill.cmd) 
-            {
-                msg.channel.send(':skull_crossbones: ...VanillaBot now shutting down... :skull_crossbones:').then(m => { 
-                    cp.closePollDb();
-                    co.closeDb();
-                    client.destroy();
-                });
+            if (client.commands.has(command)){
+                client.commands.get(command).execute(msg, args);
             }
-            else
+            else {
+                if (command === cl.c.cmdKill.cmd) 
+                {
+                    msg.channel.send(':skull_crossbones: ...VanillaBot now shutting down... :skull_crossbones:').then(m => { 
+                        cp.closePollDb();
+                        co.closeDb();
+                        client.destroy();
+                    });
+                }
+                else
+                {
+                    if (command === 'regression' && !commander.regression)
+                    {
+                    msg.channel.send(" :icecream: The command you used is incorrect, try using **!vb help** for info about the commands! :icecream: ");
+                    }
+                }
+            }
+
+        //if user in testing, allow regression command
+        if (commander.regression)
+        {
             {
-                msg.channel.send(" :icecream: The command you used is incorrect, try using **!vb help** for info about the commands! :icecream: ");
+                if (!msg.author.bot) {
+                    if (command === 'regression')
+                    {
+                        msg.channel.send("**THE BOT IS NOW TESTING. . .**");
+                        var commandList = cl.getCmdList(cl.cl);
+                        var it = 0;                     //  set your counter to 0
+                        //go throughout the list and print out commands
+                        for (it = 0; it<commandList.length; it++)
+                        {
+                            testTask(it, msg, commandList); //takes in the counter, msg to client, and list of commands as inputs
+                        }
+                    }
+                    else
+                    {
+                        //If a users tries to run a command in test build, tell them not to.
+                        msg.channel.send("**Invalid command:** command not applicable (are you sure you shouldn't be running in **release**?)");
+                    }
+                }
             }
         }
     });
@@ -114,5 +162,11 @@ client.on('message', (msg) => {
 //tells us if bot is connected after client is ready
 client.on('ready', () => {
     console.log('Bot is now connected');
-    client.user.setActivity('in TEST', { type: 'LISTENING' });
+    if (!commander.regression){
+        client.user.setActivity('COMMANDS: !vb help', { type: 'LISTENING' });
+    }
+    else
+    {
+        client.user.setActivity('In TEST', { type: 'LISTENING' });
+    }
 });

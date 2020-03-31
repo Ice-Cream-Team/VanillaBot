@@ -35,4 +35,26 @@ $ npm start -- --tokenfile <different token file>
 $ npm start -- --token <token>
 ```
 
+**To boot up the bot for hosting** (note: you can check your enviroment on the Bot's user's Listening To: tab):
+```
+# To be able to perform automative regression tests of the entire command list:
+# To run the command is !vb regression
+$ npm start -- --regression
+```
+
+**To boot up the bot for regression testing** (note: you can check your enviroment on the Bot's user's Listening To: tab):
+```
+# To be able to perform automative regression tests of the entire command list:
+# To run the command is !vb regression
+$ npm start -- --regression
+```
+
+**To ignore permission levels (admin commands)**
+```
+# If you start the bot with the following switch, it will ignore the privilege levels.
+$ npm start -- --ignoreowner
+```
+
+
+
 **To exit your hosting** of the bot press: 'Control' + 'C' in your terminal session while running the bot, or use the command !vb kill in your discord session
