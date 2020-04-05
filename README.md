@@ -17,10 +17,6 @@ https://nodejs.org/en/
 Clone the repo to your appropriate directory folder:
 $ git clone https://github.com/Ice-Cream-Team/VanillaBot.git
 
-Install discord.js
-$ npm install discord.js
-
-
 **CURRENT COMMANDS**
 
 **To boot up the bot for hosting** (note: you'll need the bot's private token to run this):
@@ -55,6 +51,9 @@ $ npm start -- --regression
 $ npm start -- --ignoreowner
 ```
 
+**To show a help menu of all the available switches**
+```
+$ npm start -- --help
+```
 
-
-**To exit your hosting** of the bot press: 'Control' + 'C' in your terminal session while running the bot, or use the command !vb kill in your discord session
+**To exit your hosting** of the bot press: Use the command `!vb kill` in your discord session. You can also issue a SIGINT (CTRL+C) on Linux to close the application (on Windows, however, the Node.js process will still execute in the background).
